@@ -42,7 +42,7 @@ const jobCompanies = computed(() => {
 })
 
 const jobCompaniesArray = computed(() => { 
-  return Object.entries(jobCompanies.value)
+  return Object.entries(jobCompanies.value).sort((a,b) => b[1] - a[1])
 })
 </script>
 
