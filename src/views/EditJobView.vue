@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, onMounted } from 'vue';
+import { reactive, onMounted, ref } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import axios from 'axios'
@@ -30,7 +30,21 @@ const state = reactive({
   isLoading: true
 })
 
+const inputs = ref([{value : ''}])
+
+const addNewBenefit = () => {
+  inputs.value.push({ value: ''})
+}
+
+const removeBenefit = (index) => {
+  if(inputs.value.length > 1) {
+    inputs.value.splice(index, 1)
+  }
+}
+
 const handleSubmit = async () => {
+  form.company.benefits = inputs.value.map(input => input.value)
+
   const newJob = {
     type: form.type,
     title: form.title,
@@ -47,7 +61,7 @@ const handleSubmit = async () => {
   }
 
   try {
-    const response = await axios.put('/api/jobs/'+ jobId, newJob)
+    await axios.put('/api/jobs/'+ jobId, newJob)
     router.push('/jobs/' + jobId)
     toast.success('Edit Job successfully')
   } catch (error) {
@@ -71,6 +85,8 @@ onMounted( async () => {
     form.company.benefits = state.job.company.benefits
     form.company.contactEmail = state.job.company.contactEmail
     form.company.contactPhone = state.job.company.contactPhone
+
+    inputs.value = form.company.benefits.map(benefit => ({ value: benefit }))
   } catch (error) {
     console.error('Error fetching data...', error)
     toast.error('Error fetching data...')
@@ -215,15 +231,30 @@ onMounted( async () => {
               class="block text-gray-700 font-bold mb-2"
               >benefits</label
             >
-            <input
-              v-model="form.company.benefits"
-              type="text"
-              id="benefits"
-              name="benefits"
-              class="border rounded w-full py-2 px-3"
-              placeholder="Benefits for employee"
-              required
-            />
+            <div v-for="(input, index) in inputs" :key="index" class="flex mt-2 mb-2">
+              <input
+                v-model="input.value"
+                type="text"
+                id="benefits"
+                name="benefits"
+                class="border rounded w-full py-2 px-3"
+                placeholder="Benefits for employee"
+                required
+              />
+              <div class="flex">
+                <div 
+                  @click="addNewBenefit"
+                  class="bg-blue-500 hover:bg-blue-600 hover:cursor-pointer text-white font-bold py-2 px-4 mx-2 rounded-md focus:outline-none focus:shadow-outline">
+                    +
+                </div>
+                <div 
+                  v-if="inputs.length > 1"
+                  @click="removeBenefit(index)"
+                  class="bg-red-500 hover:bg-red-600 hover:cursor-pointer text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline">
+                    -
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="mb-4">

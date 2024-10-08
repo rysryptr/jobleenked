@@ -103,7 +103,14 @@ const deleteJob = async (id) => {
         <p class="text-md mb-4">{{ job.company.description }}</p>
 
         <p class="text-lg font-bold mb-2">Benefits: </p>
-        <p class="text-md mb-4">{{ job.company.benefits }}</p>
+        <p class="text-md mb-4">
+          <ul>
+            <li v-for="(benefit, index) in job.company.benefits" :key="index">
+              {{ benefit }}
+            </li>
+          </ul>
+          
+        </p>
 
         <p class="text-lg font-bold mb-2">Contact Phone: </p>
         <p class="text-md mb-4">{{ job.company.contactPhone }}</p>

@@ -65,7 +65,7 @@ onMounted(async () => {
                 <p class="text-gray-500">{{ state.job.location }}</p>
               </div>
 
-              <h3 class="text-blue-800 text-lg font-bold mb-6">
+              <h3 class="text-lg font-bold mb-6">
                 Job Description
               </h3>
 
@@ -73,7 +73,7 @@ onMounted(async () => {
                 {{ state.job.description }}
               </p>
 
-              <h3 class="text-blue-800 text-lg font-bold mb-2">Salary</h3>
+              <h3 class="text-lg font-bold mb-2">Salary</h3>
 
               <p class="mb-4 text-lime-500">{{ state.job.salary }} / Year</p>
 
@@ -89,7 +89,13 @@ onMounted(async () => {
               <p class="text-md mb-4">{{ state.job.company.description }}</p>
 
               <p class="text-lg font-bold mb-2">Benefits: </p>
-              <p class="text-md mb-4">{{ state.job.company.benefits }}</p>
+              <p class="text-md mb-4">
+                <ul>
+                  <li v-for="(benefit, index) in state.job.company.benefits" :key="index">
+                    {{ benefit }}
+                  </li>
+                </ul>
+              </p>
 
               <p class="text-lg font-bold mb-2">Contact Phone: </p>
               <p class="text-md mb-4">{{ state.job.company.contactPhone }}</p>

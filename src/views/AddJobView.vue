@@ -1,8 +1,11 @@
 <script setup>
-import { reactive } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import axios from 'axios'
+
+const router = useRouter()
+const toast = useToast()
 
 const form = reactive({
   type: 'Full-Time',
@@ -13,16 +16,15 @@ const form = reactive({
   company: {
     name: '',
     description: '',
-    benefits: '',
+    benefits: [],
     contactEmail: '',
     contactPhone: ''
   }
 })
 
-const router = useRouter()
-const toast = useToast()
-
 const handleSubmit = async () => {
+  form.company.benefits = inputs.value.map(input => input.value)
+
   const newJob = {
     type: form.type,
     title: form.title,
@@ -47,6 +49,19 @@ const handleSubmit = async () => {
     toast.error('Add Job Failed')
   }
 }
+
+const inputs = ref([{ value: '' }])
+
+const addNewBenefit = () => {
+  inputs.value.push({ value : '' })
+}
+
+const removeBenefit = (index) => {
+  if(inputs.value.length > 1) {
+    inputs.value.splice(index, 1) // remove targeted element
+  }
+}
+
 </script>
 
 <template>
@@ -184,15 +199,32 @@ const handleSubmit = async () => {
               class="block text-gray-700 font-bold mb-2"
               >Benefits</label
             >
-            <input
-              v-model="form.company.benefits"
-              type="text"
-              id="benefits"
-              name="benefits"
-              class="border rounded w-full py-2 px-3"
-              placeholder="Add few benefits"
-              required
-            />
+            <div v-for="(input, index) in inputs" class="flex mb-2 mt-2" :key="index">
+              <input
+                v-model="input.value"
+                type="text"
+                id="benefits"
+                name="benefits"
+                class="border rounded w-full py-2 px-3"
+                placeholder="Add few benefits"
+                required
+              />
+              <div class="flex">
+                <div 
+                  @click="addNewBenefit"
+                  class="bg-blue-500 hover:bg-blue-600 hover:cursor-pointer text-white font-bold py-2 px-4 mx-2 rounded-md focus:outline-none focus:shadow-outline">
+                    +
+                </div>
+                <div v-if="inputs.length > 1">
+                  <div
+                    @click="removeBenefit(index)"
+                    class="bg-red-500 hover:bg-red-600 hover:cursor-pointer text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline">
+                      -
+                  </div>
+                </div>
+              </div>
+              
+            </div>
           </div>
 
           <div class="mb-4">
