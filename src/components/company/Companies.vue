@@ -1,49 +1,47 @@
 <script setup>
-import axios from 'axios'
-import { computed, onMounted, reactive, ref } from 'vue';
-import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
-import Company from '../company/Company.vue';
+import axios from "axios";
+import { computed, onMounted, reactive, ref } from "vue";
+import PulseLoader from "vue-spinner/src/PulseLoader.vue";
+import Company from "../company/Company.vue";
 
 defineProps({
-  limit: Number
-})
+  limit: Number,
+});
 
-const jobs = ref([])
+const jobs = ref([]);
 
 const state = reactive({
-  isLoading: true
-})
+  isLoading: true,
+});
 
 const fetchData = async () => {
   try {
-    const response = await axios.get('/api/jobs')
-    jobs.value = response.data
+    const response = await axios.get("http://localhost:3000/jobs");
+    jobs.value = response.data;
   } catch (error) {
-    console.error('Error fetching data...', error)
+    console.error("Error fetching data...", error);
   } finally {
-    state.isLoading = false
+    state.isLoading = false;
   }
-}
+};
+
+const groupedJobs = computed(() => {
+  const companyMap = new Map();
+
+  jobs.value.forEach((job) => {
+    if (!companyMap.has(job.company.name)) {
+      companyMap.set(job.company.name, { job, count: 1 });
+    } else {
+      companyMap.get(job.company.name).count += 1;
+    }
+  });
+
+  return Array.from(companyMap.values()).sort((a, b) => b.count - a.count);
+});
 
 onMounted(() => {
-  fetchData()
-})
-
-const jobCompanies = computed(() => {
-  return jobs.value.reduce((acc, job) => {
-    if(job.company.name) {
-      if(!acc[job.company.name]) {
-        acc[job.company.name] = 0
-      } 
-      acc[job.company.name]++
-    }
-    return acc
-  }, {})
-})
-
-const jobCompaniesArray = computed(() => { 
-  return Object.entries(jobCompanies.value).sort((a,b) => b[1] - a[1])
-})
+  fetchData();
+});
 </script>
 
 <template>
@@ -59,7 +57,15 @@ const jobCompaniesArray = computed(() => {
         </div>
 
         <div v-else class="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Company v-for="([job, count]) in jobCompaniesArray.slice(0, limit || jobCompaniesArray.length)" :key="job" :job="job" :count="count" />
+          <Company
+            v-for="({ job, count }, index) in groupedJobs.slice(
+              0,
+              limit || groupedJobs.length
+            )"
+            :key="index"
+            :job="job"
+            :count="count"
+          />
         </div>
       </div>
     </div>

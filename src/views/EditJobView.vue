@@ -1,49 +1,49 @@
 <script setup>
-import { reactive, onMounted, ref } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
-import { useToast } from 'vue-toastification';
-import axios from 'axios'
-import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
+import { reactive, onMounted, ref } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { useToast } from "vue-toastification";
+import axios from "axios";
+import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 
 const form = reactive({
-  type: 'Full-Time',
-  title: '',
-  description: '',
-  salary: '',
-  location: '',
+  type: "Full-Time",
+  title: "",
+  description: "",
+  salary: "",
+  location: "",
   company: {
-    name: '',
-    description: '',
-    contactEmail: '',
-    contactPhone: ''
-  }
-})
+    name: "",
+    description: "",
+    contactEmail: "",
+    contactPhone: "",
+  },
+});
 
-const router = useRouter()
-const route = useRoute()
-const toast = useToast()
+const router = useRouter();
+const route = useRoute();
+const toast = useToast();
 
-const jobId = route.params.id
+const jobId = route.params.id;
 
 const state = reactive({
   job: {},
-  isLoading: true
-})
+  isLoading: true,
+});
 
-const inputs = ref([{value : ''}])
+const inputs = ref([{ value: "" }]);
 
 const addNewBenefit = () => {
-  inputs.value.push({ value: ''})
-}
+  inputs.value.push({ value: "" });
+};
 
 const removeBenefit = (index) => {
-  if(inputs.value.length > 1) {
-    inputs.value.splice(index, 1)
+  if (inputs.value.length > 1) {
+    inputs.value.splice(index, 1);
   }
-}
+};
 
 const handleSubmit = async () => {
-  form.company.benefits = inputs.value.map(input => input.value)
+  form.company.benefits = inputs.value.map((input) => input.value);
 
   const newJob = {
     type: form.type,
@@ -56,44 +56,44 @@ const handleSubmit = async () => {
       description: form.company.description,
       benefits: form.company.benefits,
       contactEmail: form.company.contactEmail,
-      contactPhone: form.company.contactPhone
-    }
-  }
+      contactPhone: form.company.contactPhone,
+    },
+  };
 
   try {
-    await axios.put('/api/jobs/'+ jobId, newJob)
-    router.push('/jobs/' + jobId)
-    toast.success('Edit Job successfully')
+    await axios.put("http://localhost:3000/jobs/" + jobId, newJob);
+    router.push("/jobs/" + jobId);
+    toast.success("Edit Job successfully");
   } catch (error) {
-    console.error('Edit Job Failed', error)
-    toast.error('Edit Job Failed')
+    console.error("Edit Job Failed", error);
+    toast.error("Edit Job Failed");
   }
-}
+};
 
-onMounted( async () => {
+onMounted(async () => {
   try {
-    const response = await axios.get(`/api/jobs/${jobId}`)
-    state.job = response.data
+    const response = await axios.get(`http://localhost:3000/jobs/${jobId}`);
+    state.job = response.data;
 
-    form.type = state.job.type
-    form.title = state.job.title
-    form.description = state.job.description
-    form.salary = state.job.salary
-    form.location = state.job.location
-    form.company.name = state.job.company.name
-    form.company.description = state.job.company.description
-    form.company.benefits = state.job.company.benefits
-    form.company.contactEmail = state.job.company.contactEmail
-    form.company.contactPhone = state.job.company.contactPhone
+    form.type = state.job.type;
+    form.title = state.job.title;
+    form.description = state.job.description;
+    form.salary = state.job.salary;
+    form.location = state.job.location;
+    form.company.name = state.job.company.name;
+    form.company.description = state.job.company.description;
+    form.company.benefits = state.job.company.benefits;
+    form.company.contactEmail = state.job.company.contactEmail;
+    form.company.contactPhone = state.job.company.contactPhone;
 
-    inputs.value = form.company.benefits.map(benefit => ({ value: benefit }))
+    inputs.value = form.company.benefits.map((benefit) => ({ value: benefit }));
   } catch (error) {
-    console.error('Error fetching data...', error)
-    toast.error('Error fetching data...')
+    console.error("Error fetching data...", error);
+    toast.error("Error fetching data...");
   } finally {
-    state.isLoading = false
+    state.isLoading = false;
   }
-})
+});
 </script>
 
 <template>
@@ -138,9 +138,7 @@ onMounted( async () => {
             />
           </div>
           <div class="mb-4">
-            <label
-              for="description"
-              class="block text-gray-700 font-bold mb-2"
+            <label for="description" class="block text-gray-700 font-bold mb-2"
               >Description</label
             >
             <textarea
@@ -179,9 +177,7 @@ onMounted( async () => {
           </div>
 
           <div class="mb-4">
-            <label class="block text-gray-700 font-bold mb-2">
-              Location
-            </label>
+            <label class="block text-gray-700 font-bold mb-2"> Location </label>
             <input
               v-model="form.location"
               type="text"
@@ -226,12 +222,14 @@ onMounted( async () => {
           </div>
 
           <div class="mb-4">
-            <label
-              for="benefits"
-              class="block text-gray-700 font-bold mb-2"
+            <label for="benefits" class="block text-gray-700 font-bold mb-2"
               >benefits</label
             >
-            <div v-for="(input, index) in inputs" :key="index" class="flex mt-2 mb-2">
+            <div
+              v-for="(input, index) in inputs"
+              :key="index"
+              class="flex mt-2 mb-2"
+            >
               <input
                 v-model="input.value"
                 type="text"
@@ -242,16 +240,18 @@ onMounted( async () => {
                 required
               />
               <div class="flex">
-                <div 
+                <div
                   @click="addNewBenefit"
-                  class="bg-blue-500 hover:bg-blue-600 hover:cursor-pointer text-white font-bold py-2 px-4 mx-2 rounded-md focus:outline-none focus:shadow-outline">
-                    +
+                  class="bg-blue-500 hover:bg-blue-600 hover:cursor-pointer text-white font-bold py-2 px-4 mx-2 rounded-md focus:outline-none focus:shadow-outline"
+                >
+                  +
                 </div>
-                <div 
+                <div
                   v-if="inputs.length > 1"
                   @click="removeBenefit(index)"
-                  class="bg-red-500 hover:bg-red-600 hover:cursor-pointer text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline">
-                    -
+                  class="bg-red-500 hover:bg-red-600 hover:cursor-pointer text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline"
+                >
+                  -
                 </div>
               </div>
             </div>

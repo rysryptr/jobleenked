@@ -51,7 +51,7 @@ const deleteJob = async (id) => {
     const confirm = window.confirm('Are you sure want to delete this data?')
 
     if(confirm) {
-      await axios.delete(`/api/jobs/${id}`)
+      await axios.delete(`http://localhost:3000/jobs/${id}`)
       emit('deleteJob')
       toast.success('Delete Job Successfully')
     }

@@ -10,7 +10,8 @@
         "name": "NewTek Solutions",
         "description": "NewTek Solutions is a leading technology company specializing in web development and digital solutions. We pride ourselves on delivering high-quality products and services to our clients while fostering a collaborative and innovative work environment.",
         "benefits": [
-          "Health Insurance"
+          "Health Insurance",
+          "Parking"
         ],
         "contactEmail": "contact@teksolutions.com",
         "contactPhone": "555-555-5555"
@@ -203,24 +204,6 @@
         "contactEmail": "wugupu@mailinator.com",
         "contactPhone": "+1 (876) 152-2336"
       }
-    },
-    {
-      "type": "Full-Time",
-      "title": "Ulla Decker",
-      "description": "Culpa in facilis er",
-      "salary": "$80K - $90K",
-      "location": "Impedit officia non",
-      "company": {
-        "name": "Adkins Potts Plc",
-        "description": "Do tempor vitae dese",
-        "benefits": [
-          "Dolore voluptas cupi",
-          "Ut reiciendis obcaec"
-        ],
-        "contactEmail": "tyqibeh@mailinator.com",
-        "contactPhone": "+1 (873) 589-5381"
-      },
-      "id": "91c5"
     }
   ]
 }

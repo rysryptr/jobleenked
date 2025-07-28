@@ -21,7 +21,7 @@ const deleteJob = async () => {
     const confirm = window.confirm('Are you sure to delete this data?')
 
     if(confirm) {
-      await axios.delete(`/api/jobs/${jobId}`)
+      await axios.delete(`http://localhost:3000/jobs/${jobId}`)
       toast.success('Job Deleted successfully')
       router.push('/jobs')
     }
@@ -34,7 +34,7 @@ const deleteJob = async () => {
 
 onMounted(async () => {
   try {
-    const response = await axios.get(`/api/jobs/${jobId}`)
+    const response = await axios.get(`http://localhost:3000/jobs/${jobId}`)
     console.log(response.data)
     state.job = response.data
     console.log(state.job)

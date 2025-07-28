@@ -1,29 +1,29 @@
 <script setup>
-import { computed, reactive, ref } from 'vue';
-import { useRouter } from 'vue-router';
-import { useToast } from 'vue-toastification';
-import axios from 'axios'
+import { computed, reactive, ref } from "vue";
+import { useRouter } from "vue-router";
+import { useToast } from "vue-toastification";
+import axios from "axios";
 
-const router = useRouter()
-const toast = useToast()
+const router = useRouter();
+const toast = useToast();
 
 const form = reactive({
-  type: 'Full-Time',
-  title: '',
-  description: '',
-  salary: '',
-  location: '',
+  type: "Full-Time",
+  title: "",
+  description: "",
+  salary: "",
+  location: "",
   company: {
-    name: '',
-    description: '',
+    name: "",
+    description: "",
     benefits: [],
-    contactEmail: '',
-    contactPhone: ''
-  }
-})
+    contactEmail: "",
+    contactPhone: "",
+  },
+});
 
 const handleSubmit = async () => {
-  form.company.benefits = inputs.value.map(input => input.value)
+  form.company.benefits = inputs.value.map((input) => input.value);
 
   const newJob = {
     type: form.type,
@@ -36,32 +36,31 @@ const handleSubmit = async () => {
       description: form.company.description,
       benefits: form.company.benefits,
       contactEmail: form.company.contactEmail,
-      contactPhone: form.company.contactPhone
-    }
-  }
+      contactPhone: form.company.contactPhone,
+    },
+  };
 
   try {
-    const response = await axios.post('/api/jobs/', newJob)
-    router.push('/jobs')
-    toast.success('Add Job successfully')
+    const response = await axios.post("http://localhost:3000/jobs/", newJob);
+    router.push("/jobs");
+    toast.success("Add Job successfully");
   } catch (error) {
-    console.error('Add Job Failed', error)
-    toast.error('Add Job Failed')
+    console.error("Add Job Failed", error);
+    toast.error("Add Job Failed");
   }
-}
+};
 
-const inputs = ref([{ value: '' }])
+const inputs = ref([{ value: "" }]);
 
 const addNewBenefit = () => {
-  inputs.value.push({ value : '' })
-}
+  inputs.value.push({ value: "" });
+};
 
 const removeBenefit = (index) => {
-  if(inputs.value.length > 1) {
-    inputs.value.splice(index, 1) // remove targeted element
+  if (inputs.value.length > 1) {
+    inputs.value.splice(index, 1); // remove targeted element
   }
-}
-
+};
 </script>
 
 <template>
@@ -92,23 +91,19 @@ const removeBenefit = (index) => {
           </div>
 
           <div class="mb-4">
-            <label class="block text-gray-700 font-bold mb-2"
-              >Job Listing Name</label
-            >
+            <label class="block text-gray-700 font-bold mb-2">Job Name</label>
             <input
               v-model="form.title"
               type="text"
               id="name"
               name="name"
               class="border rounded w-full py-2 px-3 mb-2"
-              placeholder="eg. Beautiful Apartment In Miami"
+              placeholder="Front End Developer"
               required
             />
           </div>
           <div class="mb-4">
-            <label
-              for="description"
-              class="block text-gray-700 font-bold mb-2"
+            <label for="description" class="block text-gray-700 font-bold mb-2"
               >Description</label
             >
             <textarea
@@ -117,7 +112,7 @@ const removeBenefit = (index) => {
               name="description"
               class="border rounded w-full py-2 px-3"
               rows="4"
-              placeholder="Add any job duties, expectations, requirements, etc"
+              placeholder="Add any expectations, requirements, and etc"
             ></textarea>
           </div>
 
@@ -147,9 +142,7 @@ const removeBenefit = (index) => {
           </div>
 
           <div class="mb-4">
-            <label class="block text-gray-700 font-bold mb-2">
-              Location
-            </label>
+            <label class="block text-gray-700 font-bold mb-2"> Location </label>
             <input
               v-model="form.location"
               type="text"
@@ -194,12 +187,14 @@ const removeBenefit = (index) => {
           </div>
 
           <div class="mb-4">
-            <label
-              for="benefits"
-              class="block text-gray-700 font-bold mb-2"
+            <label for="benefits" class="block text-gray-700 font-bold mb-2"
               >Benefits</label
             >
-            <div v-for="(input, index) in inputs" class="flex mb-2 mt-2" :key="index">
+            <div
+              v-for="(input, index) in inputs"
+              class="flex mb-2 mt-2"
+              :key="index"
+            >
               <input
                 v-model="input.value"
                 type="text"
@@ -210,20 +205,21 @@ const removeBenefit = (index) => {
                 required
               />
               <div class="flex">
-                <div 
+                <div
                   @click="addNewBenefit"
-                  class="bg-blue-500 hover:bg-blue-600 hover:cursor-pointer text-white font-bold py-2 px-4 mx-2 rounded-md focus:outline-none focus:shadow-outline">
-                    +
+                  class="bg-blue-500 hover:bg-blue-600 hover:cursor-pointer text-white font-bold py-2 px-4 mx-2 rounded-md focus:outline-none focus:shadow-outline"
+                >
+                  +
                 </div>
                 <div v-if="inputs.length > 1">
                   <div
                     @click="removeBenefit(index)"
-                    class="bg-red-500 hover:bg-red-600 hover:cursor-pointer text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline">
-                      -
+                    class="bg-red-500 hover:bg-red-600 hover:cursor-pointer text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline"
+                  >
+                    -
                   </div>
                 </div>
               </div>
-              
             </div>
           </div>
 
