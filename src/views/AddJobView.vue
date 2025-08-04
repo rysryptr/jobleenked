@@ -13,6 +13,7 @@ const form = reactive({
   description: "",
   salary: "",
   location: "",
+  date: "",
   company: {
     name: "",
     description: "",
@@ -23,6 +24,14 @@ const form = reactive({
 });
 
 const handleSubmit = async () => {
+  const today = new Date();
+  const yyyy = today.getFullYear();
+
+  const mm = String(today.getMonth() + 1).padStart(2, "0");
+  const dd = String(today.getDate()).padStart(2, "0");
+
+  const date = `${yyyy}-${mm}-${dd}`;
+
   form.company.benefits = inputs.value.map((input) => input.value);
 
   const newJob = {
@@ -31,6 +40,7 @@ const handleSubmit = async () => {
     description: form.description,
     salary: form.salary,
     location: form.location,
+    date: date,
     company: {
       name: form.company.name,
       description: form.company.description,
@@ -67,10 +77,10 @@ const removeBenefit = (index) => {
   <section class="bg-white">
     <div class="container m-auto max-w-2xl py-24">
       <div
-        class="bg-white px-6 py-8 mb-4 border border-slate-200 rounded-md m-4 md:m-0"
+        class="bg-white px-6 py-8 mb-4 border border-slate-200 rounded-lg m-4 md:m-0"
       >
         <form @submit.prevent="handleSubmit">
-          <h2 class="text-3xl text-center font-semibold mb-6">Add Job</h2>
+          <h2 class="text-3xl text-center font-semibold mb-6">Add a New Job</h2>
 
           <div class="mb-4">
             <label for="type" class="block text-gray-700 font-bold mb-2"
@@ -80,7 +90,7 @@ const removeBenefit = (index) => {
               v-model="form.type"
               id="type"
               name="type"
-              class="border rounded w-full py-2 px-3"
+              class="border rounded-lg w-full py-2 px-3"
               required
             >
               <option value="Full-Time">Full-Time</option>
@@ -97,7 +107,7 @@ const removeBenefit = (index) => {
               type="text"
               id="name"
               name="name"
-              class="border rounded w-full py-2 px-3 mb-2"
+              class="border rounded-lg w-full py-2 px-3 mb-2"
               placeholder="Front End Developer"
               required
             />
@@ -110,7 +120,7 @@ const removeBenefit = (index) => {
               v-model="form.description"
               id="description"
               name="description"
-              class="border rounded w-full py-2 px-3"
+              class="border rounded-lg w-full py-2 px-3"
               rows="4"
               placeholder="Add any expectations, requirements, and etc"
             ></textarea>
@@ -124,7 +134,7 @@ const removeBenefit = (index) => {
               v-model="form.salary"
               id="salary"
               name="salary"
-              class="border rounded w-full py-2 px-3"
+              class="border rounded-lg w-full py-2 px-3"
               required
             >
               <option value="Under $50K">under $50K</option>
@@ -148,7 +158,7 @@ const removeBenefit = (index) => {
               type="text"
               id="location"
               name="location"
-              class="border rounded w-full py-2 px-3 mb-2"
+              class="border rounded-lg w-full py-2 px-3 mb-2"
               placeholder="Company Location"
               required
             />
@@ -165,7 +175,7 @@ const removeBenefit = (index) => {
               type="text"
               id="company"
               name="company"
-              class="border rounded w-full py-2 px-3"
+              class="border rounded-lg w-full py-2 px-3"
               placeholder="Company Name"
             />
           </div>
@@ -180,7 +190,7 @@ const removeBenefit = (index) => {
               v-model="form.company.description"
               id="company_description"
               name="company_description"
-              class="border rounded w-full py-2 px-3"
+              class="border rounded-lg w-full py-2 px-3"
               rows="4"
               placeholder="What does your company do?"
             ></textarea>
@@ -200,21 +210,21 @@ const removeBenefit = (index) => {
                 type="text"
                 id="benefits"
                 name="benefits"
-                class="border rounded w-full py-2 px-3"
+                class="border rounded-lg w-full py-2 px-3"
                 placeholder="Add few benefits"
                 required
               />
               <div class="flex">
                 <div
                   @click="addNewBenefit"
-                  class="bg-blue-500 hover:bg-blue-600 hover:cursor-pointer text-white font-bold py-2 px-4 mx-2 rounded-md focus:outline-none focus:shadow-outline"
+                  class="bg-blue-500 hover:bg-blue-600 hover:cursor-pointer text-white font-bold py-2 px-4 mx-2 rounded-full focus:outline-none focus:shadow-outline"
                 >
                   +
                 </div>
                 <div v-if="inputs.length > 1">
                   <div
                     @click="removeBenefit(index)"
-                    class="bg-red-500 hover:bg-red-600 hover:cursor-pointer text-white font-bold py-2 px-4 rounded-md focus:outline-none focus:shadow-outline"
+                    class="bg-red-500 hover:bg-red-600 hover:cursor-pointer text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:shadow-outline"
                   >
                     -
                   </div>
@@ -234,7 +244,7 @@ const removeBenefit = (index) => {
               type="email"
               id="contact_email"
               name="contact_email"
-              class="border rounded w-full py-2 px-3"
+              class="border rounded-lg w-full py-2 px-3"
               placeholder="Email address for applicants"
               required
             />
@@ -250,7 +260,7 @@ const removeBenefit = (index) => {
               type="tel"
               id="contact_phone"
               name="contact_phone"
-              class="border rounded w-full py-2 px-3"
+              class="border rounded-lg w-full py-2 px-3"
               placeholder="Optional phone for applicants"
             />
           </div>

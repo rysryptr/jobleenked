@@ -4,6 +4,7 @@ import SalaryCards from "./SalaryCards.vue";
 
 import { reactive, onMounted, defineProps, computed } from "vue";
 import axios from "axios";
+import JobListing from "../browsejob/JobListing.vue";
 
 defineProps({
   limit: Number,
@@ -36,19 +37,23 @@ onMounted(async () => {
 
 <template>
   <section class="px-4 py-10">
-    <div class="container-xl lg:container m-auto">
-      <h2 class="text-3xl font-bold text-slate-800 mb-6">Highest Salary Job</h2>
+    <div class="mx-auto max-w-7xl">
+      <div class="container-xl lg:container m-auto">
+        <h2 class="text-3xl font-bold text-slate-800 mb-6">
+          Highest Salary Job
+        </h2>
 
-      <div v-if="state.isLoading" class="text-center text-slate-500 py-6">
-        <PulseLoader />
-      </div>
+        <div v-if="state.isLoading" class="text-center text-slate-500 py-6">
+          <PulseLoader />
+        </div>
 
-      <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <SalaryCards
-          v-for="job in sortedSalary.slice(0, limit || state.jobs.length)"
-          :key="job.id"
-          :job="job"
-        />
+        <div v-else class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <JobListing
+            v-for="job in sortedSalary.slice(0, limit || state.jobs.length)"
+            :key="job.id"
+            :job="job"
+          />
+        </div>
       </div>
     </div>
   </section>

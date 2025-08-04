@@ -48,13 +48,13 @@ onMounted(async () => {
         </div>
       </div>
     </div>
-  </section>
 
-  <section v-if="showButton" class="m-auto max-w-lg my-10 px-6">
-    <RouterLink
-      to="/jobs"
-      class="block border border-black text-black text-center py-4 px-6 rounded-xl hover:bg-black hover:text-white"
-      >View All Jobs</RouterLink
-    >
+    <div v-if="showButton" class="m-auto max-w-lg my-10 px-6">
+      <RouterLink
+        to="/jobs"
+        class="block border border-black text-black text-center py-4 px-6 rounded-xl hover:bg-black hover:text-white"
+        >View All Jobs</RouterLink
+      >
+    </div>
   </section>
 </template>
