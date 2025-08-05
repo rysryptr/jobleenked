@@ -47,6 +47,7 @@ const handleSearch = () => {
                 </button>
               </div>
               <button
+                @click="handleSearch"
                 class="px-4 py-3 bg-slate-900 text-white rounded-tr-full rounded-br-full border border-gray-700 hover:bg-gray-800"
               >
                 Search
