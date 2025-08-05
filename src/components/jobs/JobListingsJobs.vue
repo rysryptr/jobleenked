@@ -4,7 +4,10 @@ import JobsAside from "./JobsAside.vue";
 import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 
 import axios from "axios";
-import { reactive, onMounted, ref } from "vue";
+import { reactive, onMounted, ref, watch } from "vue";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
 
 const state = reactive({
   jobs: [],
@@ -14,10 +17,27 @@ const state = reactive({
   resultData: false,
 });
 
+const query = ref(route.query.q || "");
+console.log(query.value);
+
 const fetchData = async () => {
   try {
-    const response = await axios.get("http://localhost:3000/jobs");
-    state.jobs = response.data;
+    if (query.value) {
+      const response = await axios.get(
+        `http://localhost:3000/jobs?q=${query.value}`
+      );
+      const result = response.data;
+
+      state.jobs = result.filter(
+        (job) =>
+          job.title.toLowerCase().includes(query.value) ||
+          job.company.name.toLowerCase().includes(query.value) ||
+          job.location.toLowerCase().includes(query.value)
+      );
+    } else {
+      const response = await axios.get("http://localhost:3000/jobs");
+      state.jobs = response.data;
+    }
   } catch (error) {
     console.error("Error Fetching data...", error);
   } finally {
@@ -29,40 +49,48 @@ onMounted(() => {
   fetchData();
 });
 
-const query = ref("");
-const results = ref([]);
-
-const searchData = async () => {
-  if (query.value.length === 0) {
-    results.value = [];
-    state.resultData = false;
-    return;
+watch(
+  () => route.query.q,
+  (newVal) => {
+    query.value = newVal;
+    fetchData();
   }
+);
 
-  state.isLoading = true;
+// const query = ref("");
+// const results = ref([]);
 
-  try {
-    const response = await axios.get("http://localhost:3000/jobs/");
-    const searchQuery = query.value.toLowerCase();
-    results.value = response.data.filter(
-      (job) =>
-        job.title.toLowerCase().includes(searchQuery) ||
-        job.company.name.toLowerCase().includes(searchQuery) ||
-        job.location.toLowerCase().includes(searchQuery)
-    );
+// const searchData = async () => {
+//   if (query.value.length === 0) {
+//     results.value = [];
+//     state.resultData = false;
+//     return;
+//   }
 
-    state.resultData = results.value.length === 0;
-  } catch (error) {
-    console.error("Error fetching data...", error);
-  } finally {
-    state.isLoading = false;
-  }
-};
+//   state.isLoading = true;
 
-const clearFilter = () => {
-  query.value = "";
-  searchData();
-};
+//   try {
+//     const response = await axios.get("http://localhost:3000/jobs/");
+//     const searchQuery = query.value.toLowerCase();
+//     results.value = response.data.filter(
+//       (job) =>
+//         job.title.toLowerCase().includes(searchQuery) ||
+//         job.company.name.toLowerCase().includes(searchQuery) ||
+//         job.location.toLowerCase().includes(searchQuery)
+//     );
+
+//     state.resultData = results.value.length === 0;
+//   } catch (error) {
+//     console.error("Error fetching data...", error);
+//   } finally {
+//     state.isLoading = false;
+//   }
+// };
+
+// const clearFilter = () => {
+//   query.value = "";
+//   searchData();
+// };
 
 const handleJobDetail = async (id) => {
   state.jobLoading = true;
@@ -80,7 +108,7 @@ const handleJobDetail = async (id) => {
 <template>
   <section v-if="!state.isLoading" class="bg-white">
     <div class="container mx-auto max-w-7xl py-10 px-6">
-      <div class="min-w-7xl border border-slate-200 p-6 rounded-lg mb-6">
+      <!-- <div class="min-w-7xl border border-slate-200 p-6 rounded-lg mb-6">
         <h3 class="text-xl font-bold mb-2">Search</h3>
         <div class="mb-2">
           <input
@@ -98,7 +126,7 @@ const handleJobDetail = async (id) => {
         >
           Clear Filter
         </span>
-      </div>
+      </div> -->
 
       <div
         v-if="!state.resultData"
@@ -106,7 +134,7 @@ const handleJobDetail = async (id) => {
       >
         <main>
           <JobsMain
-            v-for="job in results.length ? results : state.jobs"
+            v-for="job in state.jobs"
             @jobDetail="handleJobDetail"
             :key="job.id"
             :job="job"

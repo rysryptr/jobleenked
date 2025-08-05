@@ -17,7 +17,7 @@ const state = reactive({
 })
 
 const scrollY = ref(0)
-const topOffSet = ref('top-72')
+const topOffSet = ref('top-30')
 const position = ref('absolute')
 
 const toast = useToast()
@@ -29,11 +29,11 @@ const emit = defineEmits(['deleteJob'])
 const handleScroll = () => {
   scrollY.value = window.scrollY
   
-  if(scrollY.value > 200) {
-    topOffSet.value = 'top-12'
+  if(scrollY.value > 138) {
+    topOffSet.value = 'top-10'
     position.value = 'fixed'
   } else {
-    topOffSet.value = 'top-72'
+    topOffSet.value = 'top-30'
     position.value = 'absolute'
   }
 }
@@ -70,13 +70,13 @@ const deleteJob = async (id) => {
 
     <div v-if="jobLength < 1" 
       :class="['transition-all duration-300',topOffSet, position]"
-      class="bg-white text-slate-500 min-w-[730px] text-center p-6 rounded-lg border border-slate-200 mr-60">
+      class="fixed bg-white text-slate-500 min-w-[730px] text-center p-6 rounded-lg border border-slate-200 mr-60">
         Select job from the left side for the details
     </div>
 
     <div v-else 
       :class="['transition-all duration-300',topOffSet, position]"
-      class="bg-white min-w-[730px] max-h-[680px] h-full overflow-y-auto p-6 rounded-lg border border-slate-200 mr-60 mb-20">
+      class="fixed bg-white min-w-[730px] max-h-[680px] h-full overflow-y-auto p-6 rounded-lg border border-slate-200 mr-60 mb-20">
       <div v-if="isLoading" class="text-center m-6">
         <PulseLoader />
       </div>

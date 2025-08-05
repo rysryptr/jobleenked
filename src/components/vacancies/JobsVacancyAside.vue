@@ -119,16 +119,10 @@ onBeforeUnmount(() => {
 
         <!-- Manage -->
         <RouterLink
-          :to="'/jobs/edit/' + job.id"
+          to="/applied"
           class="bg-blue-500 hover:bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-8 block"
-          >Edit Job</RouterLink
+          >Quick Apply</RouterLink
         >
-        <button
-          @click="deleteJob(job.id)"
-          class="bg-white border border-red-600 hover:bg-red-600 text-red-600 hover:text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-4 block"
-        >
-          Delete Job
-        </button>
       </div>
     </div>
   </aside>
