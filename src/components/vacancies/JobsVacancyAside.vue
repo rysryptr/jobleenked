@@ -84,7 +84,7 @@ onBeforeUnmount(() => {
     <div
       v-else
       :class="['transition-all duration-300', topOffSet, position]"
-      class="bg-white min-w-[730px] max-h-[680px] h-full overflow-y-auto p-6 rounded-lg border border-slate-200 mr-60 mb-20"
+      class="bg-white min-w-[730px] max-h-[780px] h-full overflow-y-auto p-6 rounded-lg border border-slate-200 mr-60 mb-20"
     >
       <div v-if="isLoading" class="text-center m-6">
         <PulseLoader />

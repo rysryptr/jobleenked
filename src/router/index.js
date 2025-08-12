@@ -6,6 +6,7 @@ import JobVacancyView from "@/views/JobVacancyView.vue";
 import AddJobView from "@/views/AddJobView.vue";
 import EditJobView from "@/views/EditJobView.vue";
 import ApplySuccess from "@/components/browsejob/apply_success.vue";
+import JobsAsideMobile from "@/components/jobs/JobsAsideMobile.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),

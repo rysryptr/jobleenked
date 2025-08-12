@@ -5,9 +5,10 @@ import PulseLoader from "vue-spinner/src/PulseLoader.vue";
 
 import axios from "axios";
 import { reactive, onMounted, ref, watch } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
+const router = useRouter();
 
 const state = reactive({
   jobs: [],
@@ -15,10 +16,11 @@ const state = reactive({
   isLoading: true,
   jobLoading: false,
   resultData: false,
+  resultNull: false,
+  mobileContent: false,
 });
 
 const query = ref(route.query.q || "");
-console.log(query.value);
 
 const fetchData = async () => {
   try {
@@ -28,12 +30,19 @@ const fetchData = async () => {
       );
       const result = response.data;
 
+      state.resultNull = false;
       state.jobs = result.filter(
         (job) =>
           job.title.toLowerCase().includes(query.value) ||
           job.company.name.toLowerCase().includes(query.value) ||
           job.location.toLowerCase().includes(query.value)
       );
+
+      if (state.jobs.length < 1) {
+        state.resultNull = true;
+
+        console.log(state.resultNull);
+      }
     } else {
       const response = await axios.get("http://localhost:3000/jobs");
       state.jobs = response.data;
@@ -57,46 +66,15 @@ watch(
   }
 );
 
-// const query = ref("");
-// const results = ref([]);
-
-// const searchData = async () => {
-//   if (query.value.length === 0) {
-//     results.value = [];
-//     state.resultData = false;
-//     return;
-//   }
-
-//   state.isLoading = true;
-
-//   try {
-//     const response = await axios.get("http://localhost:3000/jobs/");
-//     const searchQuery = query.value.toLowerCase();
-//     results.value = response.data.filter(
-//       (job) =>
-//         job.title.toLowerCase().includes(searchQuery) ||
-//         job.company.name.toLowerCase().includes(searchQuery) ||
-//         job.location.toLowerCase().includes(searchQuery)
-//     );
-
-//     state.resultData = results.value.length === 0;
-//   } catch (error) {
-//     console.error("Error fetching data...", error);
-//   } finally {
-//     state.isLoading = false;
-//   }
-// };
-
-// const clearFilter = () => {
-//   query.value = "";
-//   searchData();
-// };
-
 const handleJobDetail = async (id) => {
   state.jobLoading = true;
   try {
-    const response = await axios.get(`http://localhost:3000/jobs/${id}`);
-    state.job = response.data;
+    if (window.innerWidth > 768) {
+      const response = await axios.get(`http://localhost:3000/jobs/${id}`);
+      state.job = response.data;
+    } else {
+      router.push({ name: "job", params: { id: id } });
+    }
   } catch (error) {
     console.error("Error Fetching Data...", error);
   } finally {
@@ -106,28 +84,8 @@ const handleJobDetail = async (id) => {
 </script>
 
 <template>
-  <section v-if="!state.isLoading" class="bg-white">
+  <section v-if="!state.isLoading && !state.resultNull" class="bg-white">
     <div class="container mx-auto max-w-7xl py-10 px-6">
-      <!-- <div class="min-w-7xl border border-slate-200 p-6 rounded-lg mb-6">
-        <h3 class="text-xl font-bold mb-2">Search</h3>
-        <div class="mb-2">
-          <input
-            type="text"
-            v-model="query"
-            @keyup.enter="searchData"
-            placeholder="Find your job by job name, city, or company..."
-            class="p-3 w-full mx-auto border border-slate-200 rounded-md outline-none mr-4"
-          />
-        </div>
-        <span
-          v-if="results.length || state.resultData"
-          @click="clearFilter"
-          class="hover:cursor-pointer text-blue-700 hover:text-blue-900 font-semibold"
-        >
-          Clear Filter
-        </span>
-      </div> -->
-
       <div
         v-if="!state.resultData"
         class="grid grid-cols-1 md:grid-cols-40/60 w-full gap-6"
@@ -158,6 +116,13 @@ const handleJobDetail = async (id) => {
       </div>
     </div>
   </section>
+
+  <div
+    v-else-if="state.resultNull"
+    class="bg-white text-slate-500 max-w-[1280px] md:mx-auto w-full text-center p-6 rounded-lg border border-slate-200 mt-8"
+  >
+    Data Not Found! Please Search Again
+  </div>
 
   <div v-else class="text-center m-6">
     <PulseLoader />

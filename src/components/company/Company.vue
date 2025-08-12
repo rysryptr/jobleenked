@@ -19,7 +19,7 @@ const initialCompany = computed(() => {
     class="bg-white rounded-xl border border-slate-200 relative hover:border-blue-500 hover:shadow-lg"
   >
     <div class="p-4">
-      <div class="mb-6 flex flex-col justify-center gap-4">
+      <div class="flex flex-col justify-center gap-4">
         <div class="flex items-center gap-4">
           <div
             class="bg-pink-500 w-10 h-10 text-center text-white p-2 rounded-full font-bold text-xl mb-2"

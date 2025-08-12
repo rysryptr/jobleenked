@@ -7,7 +7,7 @@ import JobListings from "@/components/browsejob/JobListings.vue";
 </script>
 
 <template>
-  <!-- <Hero /> -->
+  <Hero />
   <Companies :limit="4" />
   <HighestSalary :limit="3" />
   <JobListings :limit="3" :showButton="true" />

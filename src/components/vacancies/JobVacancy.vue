@@ -4,9 +4,10 @@ import JobsVacancyAside from "./JobsVacancyAside.vue";
 import JobsVacancyMain from "./JobsVacancyMain.vue";
 
 import { computed, onMounted, reactive } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
+const router = useRouter();
 
 const companyName = route.params.name;
 
@@ -30,8 +31,12 @@ onMounted(() => {
 
 const handleJobDetail = async (id) => {
   try {
-    const response = await axios.get(`http://localhost:3000/jobs/${id}`);
-    state.job = response.data;
+    if (window.innerWidth > 768) {
+      const response = await axios.get(`http://localhost:3000/jobs/${id}`);
+      state.job = response.data;
+    } else {
+      router.push({ name: "job", params: { id: id } });
+    }
   } catch (error) {
     console.error("Error fetching data...", error);
   }

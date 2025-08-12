@@ -83,6 +83,18 @@ const removeBenefit = (index) => {
           <h2 class="text-3xl text-center font-semibold mb-6">Add a New Job</h2>
 
           <div class="mb-4">
+            <label class="block text-gray-700 font-bold mb-2">Job Name</label>
+            <input
+              v-model="form.title"
+              type="text"
+              id="name"
+              name="name"
+              class="border rounded-lg w-full py-2 px-3 mb-2"
+              placeholder="Front End Developer"
+              required
+            />
+          </div>
+          <div class="mb-4">
             <label for="type" class="block text-gray-700 font-bold mb-2"
               >Job Type</label
             >
@@ -99,19 +111,6 @@ const removeBenefit = (index) => {
               <option value="Internship">Internship</option>
             </select>
           </div>
-
-          <div class="mb-4">
-            <label class="block text-gray-700 font-bold mb-2">Job Name</label>
-            <input
-              v-model="form.title"
-              type="text"
-              id="name"
-              name="name"
-              class="border rounded-lg w-full py-2 px-3 mb-2"
-              placeholder="Front End Developer"
-              required
-            />
-          </div>
           <div class="mb-4">
             <label for="description" class="block text-gray-700 font-bold mb-2"
               >Description</label
@@ -123,6 +122,7 @@ const removeBenefit = (index) => {
               class="border rounded-lg w-full py-2 px-3"
               rows="4"
               placeholder="Add any expectations, requirements, and etc"
+              required
             ></textarea>
           </div>
 
@@ -164,7 +164,7 @@ const removeBenefit = (index) => {
             />
           </div>
 
-          <h3 class="text-2xl mb-5">Company Info</h3>
+          <!-- <h3 class="text-2xl mb-5">Company Info</h3> -->
 
           <div class="mb-4">
             <label for="company" class="block text-gray-700 font-bold mb-2"
@@ -177,6 +177,7 @@ const removeBenefit = (index) => {
               name="company"
               class="border rounded-lg w-full py-2 px-3"
               placeholder="Company Name"
+              required
             />
           </div>
 
@@ -193,6 +194,7 @@ const removeBenefit = (index) => {
               class="border rounded-lg w-full py-2 px-3"
               rows="4"
               placeholder="What does your company do?"
+              required
             ></textarea>
           </div>
 

@@ -11,6 +11,7 @@ const form = reactive({
   description: "",
   salary: "",
   location: "",
+  date: "",
   company: {
     name: "",
     description: "",
@@ -51,6 +52,7 @@ const handleSubmit = async () => {
     description: form.description,
     salary: form.salary,
     location: form.location,
+    date: form.date,
     company: {
       name: form.company.name,
       description: form.company.description,
@@ -80,6 +82,7 @@ onMounted(async () => {
     form.description = state.job.description;
     form.salary = state.job.salary;
     form.location = state.job.location;
+    form.date = state.job.date;
     form.company.name = state.job.company.name;
     form.company.description = state.job.company.description;
     form.company.benefits = state.job.company.benefits;
@@ -188,6 +191,7 @@ onMounted(async () => {
               required
             />
           </div>
+          <input type="hidden" v-model="form.date" id="date" name="date" />
 
           <h3 class="text-2xl mb-5">Company Info</h3>
 

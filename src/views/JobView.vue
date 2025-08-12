@@ -55,14 +55,14 @@ onMounted(async () => {
         <div class="grid grid-cols-1 max-w-7xl w-full gap-6">
           <main>
             <div
-              class="bg-white p-6 rounded-lg border border-slate-200 text-center md:text-left"
+              class="bg-white p-6 rounded-lg border border-slate-200 text-left"
             >
               <div class="text-gray-500 mb-4">{{ state.job.type }}</div>
               <h1 class="text-3xl font-bold mb-4">{{ state.job.title }}</h1>
               <div
-                class="text-gray-500 mb-4 flex align-middle justify-center md:justify-start"
+                class="text-gray-500 mb-4"
               >
-                <p class="text-gray-500">{{ state.job.location }}</p>
+                {{ state.job.location }}
               </div>
 
               <h3 class="text-lg font-bold mb-6">
@@ -104,7 +104,11 @@ onMounted(async () => {
               <p class="text-md mb-4">{{ state.job.company.contactEmail }}</p>
 
               <!-- Manage -->
-                <RouterLink
+               <RouterLink
+                to="/applied"
+                class="bg-blue-500 hover:bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-8 block"
+                >Quick Apply</RouterLink>
+                <!-- <RouterLink
                   :to="'/jobs/edit/' + state.job.id"
                   class="bg-blue-500 hover:bg-blue-600 text-white text-center font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-8 block"
                   >Edit Job</RouterLink
@@ -113,7 +117,7 @@ onMounted(async () => {
                   class="bg-white border border-red-600 hover:bg-red-600 text-red-600 hover:text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-4 block"
                 >
                   Delete Job
-                </button>
+                </button> -->
             </div>
           </main>
         </div>
