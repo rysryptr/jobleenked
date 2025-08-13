@@ -76,7 +76,7 @@ onBeforeUnmount(() => {
     <div
       v-if="jobLength < 1"
       :class="['transition-all duration-300', topOffSet, position]"
-      class="bg-white text-slate-500 min-w-[730px] text-center p-6 rounded-lg border border-slate-200 mr-60"
+      class="fixed bg-white text-slate-500 hidden md:max-w-[490px] md:block lg:max-w-[730px] w-full text-center p-6 rounded-lg border border-slate-200 mr-60"
     >
       Select job from the left side for the details
     </div>
@@ -84,7 +84,7 @@ onBeforeUnmount(() => {
     <div
       v-else
       :class="['transition-all duration-300', topOffSet, position]"
-      class="bg-white min-w-[730px] max-h-[780px] h-full overflow-y-auto p-6 rounded-lg border border-slate-200 mr-60 mb-20"
+      class="fixed bg-white text-slate-500 hidden md:max-w-[490px] md:block lg:max-w-[730px] w-full text-center p-6 rounded-lg border border-slate-200 mr-60"
     >
       <div v-if="isLoading" class="text-center m-6">
         <PulseLoader />

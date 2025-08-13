@@ -1,7 +1,8 @@
 <script setup>
 import { computed, defineProps } from "vue";
-import { RouterLink } from "vue-router";
+import { RouterLink, useRouter } from "vue-router";
 
+const router = useRouter();
 const props = defineProps({
   count: Number,
   job: Object,
@@ -11,11 +12,18 @@ const initialCompany = computed(() => {
   const initJob = props.job.company.name.substring(0, 1);
   return initJob;
 });
+
+const handleCompany = (name) => {
+  const filterName = name.trim().toLowerCase();
+  if (filterName) {
+    router.push({ name: "jobs", query: { q: filterName } });
+  }
+};
 </script>
 
 <template>
-  <RouterLink
-    :to="'company/' + props.job.company.name"
+  <div
+    @click="handleCompany(props.job.company.name)"
     class="bg-white rounded-xl border border-slate-200 relative hover:border-blue-500 hover:shadow-lg"
   >
     <div class="p-4">
@@ -38,5 +46,5 @@ const initialCompany = computed(() => {
         </div>
       </div>
     </div>
-  </RouterLink>
+  </div>
 </template>

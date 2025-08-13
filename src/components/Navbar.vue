@@ -13,9 +13,10 @@ const isMenuOpen = ref(false);
 const isSearchOpen = ref(false);
 
 const handleSearch = (search) => {
-  // console.log(search);
-  if (search.trim().toLowerCase()) {
-    router.push({ name: "jobs", query: { q: search } });
+  const searchName = search.trim().toLowerCase();
+
+  if (searchName) {
+    router.push({ name: "jobs", query: { q: searchName } });
   }
 
   isSearchOpen.value = false;

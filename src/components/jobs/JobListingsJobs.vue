@@ -21,6 +21,7 @@ const state = reactive({
 });
 
 const query = ref(route.query.q || "");
+console.log(query);
 
 const fetchData = async () => {
   try {
@@ -40,8 +41,6 @@ const fetchData = async () => {
 
       if (state.jobs.length < 1) {
         state.resultNull = true;
-
-        console.log(state.resultNull);
       }
     } else {
       const response = await axios.get("http://localhost:3000/jobs");
